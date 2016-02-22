@@ -3,3 +3,5 @@ sudo: false
 node_js:
   - stable
   - 4
+after_success:
+  _ 'npm run coveralls'
