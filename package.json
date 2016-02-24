@@ -10,7 +10,7 @@
     "build": "babel src --out-dir lib",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "prepublish": "npm run build",
-    "test:w": "mocha --compilers js:babel-register -w -s 0",
+    "test:w": "mocha --compilers js:babel-register -w",
     "test": "babel-node ./node_modules/.bin/isparta cover _mocha"
   },
   "devDependencies": {

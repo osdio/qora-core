@@ -1,4 +1,5 @@
 import Base58 from 'bs58';
+import nacl_factory from 'js-nacl';
 import {
 	doubleSha256,
 	wordToBytes,
@@ -6,9 +7,13 @@ import {
 	int32ToBytes,
 	generateArbitraryTransactionV3Base,
 	generateRegisterNameTransactionBase,
-	generatePaymentTransactionBase
+	generatePaymentTransactionBase,
+	stringtoUTF8Array
 } from './utils';
 import * as core from './core';
+
+
+const nacl = nacl_factory.instantiate();
 
 
 /*
@@ -18,6 +23,7 @@ import * as core from './core';
  * */
 export function generateSignaturePaymentTransaction(keyPair, lastReference, recipient, amount, fee, timestamp) {
 	const data = generatePaymentTransactionBase(keyPair.publicKey, lastReference, recipient, amount, fee, timestamp);
+
 	return nacl.crypto_sign_detached(data, keyPair.privateKey);
 }
 
@@ -28,15 +34,15 @@ export function generatePaymentTransaction(keyPair, lastReference, recipient, am
 }
 
 
-export function generatePaymentTransactionRaw(seed, lastReference, recipientAccountAddress, amount, fee, timestamp = new Date().getTime()) {
+export function generatePaymentTransactionRaw({seed, lastReference, recipient, amount, fee, timestamp = new Date().getTime()}) {
 	let senderAccountSeed = Base58.decode(seed);
 	if (senderAccountSeed.length != 32) {
 		throw 'Wrong Seed'
 	}
 
 	let keyPair = core.getKeyPairFromSeed(senderAccountSeed);
-	let signature = generateSignaturePaymentTransaction(keyPair, lastReference, recipientAccountAddress, amount, fee, timestamp);
-	let paymentTransactionRaw = generatePaymentTransaction(keyPair, lastReference, recipientAccountAddress, amount, fee, timestamp, signature);
+	let signature = generateSignaturePaymentTransaction(keyPair, lastReference, recipient, amount, fee, timestamp);
+	let paymentTransactionRaw = generatePaymentTransaction(keyPair, lastReference, recipient, amount, fee, timestamp, signature);
 	return Base58.encode(paymentTransactionRaw);
 }
 
@@ -46,27 +52,28 @@ export function generatePaymentTransactionRaw(seed, lastReference, recipientAcco
  * Arbitrary Transaction V3
  *
  * */
-export function generateSignatureArbitraryTransactionV3(keyPair, lastReference, service, arbitraryData, fee, timestamp) {
-	const data = generateArbitraryTransactionV3Base(keyPair.publicKey, lastReference, service, arbitraryData, fee, timestamp);
-	return nacl.sign.detached(data, keyPair.privateKey);
+export function generateSignatureArbitraryTransactionV3(keyPair, lastReference, service, data, fee, timestamp) {
+	const base = generateArbitraryTransactionV3Base(keyPair.publicKey, lastReference, service, data, fee, timestamp);
+
+	return nacl.crypto_sign_detached(base, keyPair.privateKey);
 }
 
 
-export function generateArbitraryTransactionV3(keyPair, lastReference, service, arbitraryData, fee, timestamp, signature) {
-	return appendBuffer(generateArbitraryTransactionV3Base(keyPair.publicKey, lastReference, service, arbitraryData, fee, timestamp),
+export function generateArbitraryTransactionV3(keyPair, lastReference, service, data, fee, timestamp, signature) {
+	return appendBuffer(generateArbitraryTransactionV3Base(keyPair.publicKey, lastReference, service, data, fee, timestamp),
 		signature);
 }
 
 
-export function getArbitraryTransactionV3Raw(base58SenderAccountSeed, base58LastReferenceOfAccount, service, arbitraryData, fee, timestamp = new Date().getTime()) {
-	let senderAccountSeed = Base58.decode(base58SenderAccountSeed);
+export function generateArbitraryTransactionV3Raw({seed, lastReference, service, data, fee, timestamp = new Date().getTime()}) {
+	let senderAccountSeed = Base58.decode(seed);
 	if (senderAccountSeed.length != 32) {
 		throw 'Wrong Seed'
 	}
-
+	data = stringtoUTF8Array(data);
 	let keyPair = core.getKeyPairFromSeed(senderAccountSeed);
-	let signature = generateSignatureArbitraryTransactionV3(keyPair, base58LastReferenceOfAccount, service, arbitraryData, fee, timestamp);
-	let raw = generateArbitraryTransactionV3(keyPair, base58LastReferenceOfAccount, service, arbitraryData, fee, timestamp, signature);
+	let signature = generateSignatureArbitraryTransactionV3(keyPair, lastReference, service, data, fee, timestamp);
+	let raw = generateArbitraryTransactionV3(keyPair, lastReference, service, data, fee, timestamp, signature);
 	return Base58.encode(raw);
 }
 
@@ -78,7 +85,7 @@ export function getArbitraryTransactionV3Raw(base58SenderAccountSeed, base58Last
  * */
 export function generateSignatureRegisterNameTransaction(keyPair, lastReference, owner, name, value, fee, timestamp) {
 	const data = generateRegisterNameTransactionBase(keyPair.publicKey, lastReference, owner, name, value, fee, timestamp);
-	return nacl.sign.detached(data, keyPair.privateKey);
+	return nacl.crypto_sign_detached(data, keyPair.privateKey);
 }
 
 
@@ -88,14 +95,16 @@ export function generateRegisterNameTransaction(keyPair, lastReference, owner, n
 }
 
 
-export function generateRegisterNameTransactionRaw(base58SenderAccountSeed, base58LastReferenceOfAccount, owner, name, value, fee, timestamp = new Date().getTime()) {
-	let senderAccountSeed = Base58.decode(base58SenderAccountSeed);
+export function generateRegisterNameTransactionRaw({seed, lastReference, owner, name, value, fee, timestamp = new Date().getTime()}) {
+	let senderAccountSeed = Base58.decode(seed);
 	if (senderAccountSeed.length != 32) {
 		throw 'Wrong Seed'
 	}
+	name = stringtoUTF8Array(name);
+	value = stringtoUTF8Array(value);
 
 	let keyPair = core.getKeyPairFromSeed(senderAccountSeed);
-	let signature = generateSignatureRegisterNameTransaction(keyPair, base58LastReferenceOfAccount, owner, name, value, fee, timestamp);
-	let raw = generateRegisterNameTransaction(keyPair, base58LastReferenceOfAccount, owner, name, value, fee, timestamp, signature);
+	let signature = generateSignatureRegisterNameTransaction(keyPair, lastReference, owner, name, value, fee, timestamp);
+	let raw = generateRegisterNameTransaction(keyPair, lastReference, owner, name, value, fee, timestamp, signature);
 	return Base58.encode(raw);
 }

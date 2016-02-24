@@ -25,8 +25,7 @@ export function generateSeedByPassword(password) {
 	}
 
 	let byteSeed = new Uint8Array(doubleSha256(password));
-	let base58BaseSeed = Base58.encode(byteSeed);
-	return base58BaseSeed;
+	return Base58.encode(byteSeed);
 }
 
 

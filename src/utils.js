@@ -93,6 +93,7 @@ export function generateArbitraryTransactionV3Base(publicKey, lastReference, ser
 
 	var data = new Uint8Array();
 
+
 	data = appendBuffer(data, typeBytes);
 	data = appendBuffer(data, timestampBytes);
 	data = appendBuffer(data, lastReference);
@@ -103,6 +104,7 @@ export function generateArbitraryTransactionV3Base(publicKey, lastReference, ser
 	data = appendBuffer(data, dataSizeBytes);
 	data = appendBuffer(data, arbitraryData);
 	data = appendBuffer(data, feeBytes);
+
 
 	return data;
 }
