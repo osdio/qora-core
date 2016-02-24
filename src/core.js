@@ -1,15 +1,22 @@
 import Base58 from 'bs58';
 import nacl_factory from 'js-nacl';
-import RIPEMD160 from './ripemd160';
-
-import sha256 from './sha256';
-import { doubleSha256, getTransitionStr, wordToBytes } from './utils';
-
+import RIPEMD160 from './libs/ripemd160';
+import sha256 from './libs/sha256';
+import {
+	doubleSha256,
+	wordToBytes,
+	appendBuffer,
+	int32ToBytes,
+	generateArbitraryTransactionV3Base,
+	generateRegisterNameTransactionBase,
+	generatePaymentTransactionBase
+} from './utils';
+import TYPES from './constaints/transactionTypes';
 
 const nacl = nacl_factory.instantiate();
 
 
-export function genSeedByPassword(password) {
+export function generateSeedByPassword(password) {
 	if (typeof(password) !== 'string') {
 		throw 'password should be string';
 	}
@@ -23,7 +30,7 @@ export function genSeedByPassword(password) {
 }
 
 
-export function genAccountFromSeed(base58AccountSeed) {
+export function generateAccountFromSeed(base58AccountSeed) {
 	if (Base58.decode(base58AccountSeed).length != 32) {
 		throw 'invalid seed';
 	}
@@ -39,7 +46,7 @@ export function genAccountFromSeed(base58AccountSeed) {
 }
 
 
-export function genAccounts(base58BaseSeed, count = 2) {
+export function generateAccounts(base58BaseSeed, count = 2) {
 	let seed = Base58.decode(base58BaseSeed);
 	if (seed.length !== 32) {
 		throw 'invalid seed';
@@ -47,7 +54,7 @@ export function genAccounts(base58BaseSeed, count = 2) {
 	let accounts = [];
 	for (let i = 0; i < count; i++) {
 		let base58AccountSeed = generateAccountSeed(seed, i, true);
-		accounts.push(genAccountFromSeed(base58AccountSeed))
+		accounts.push(generateAccountFromSeed(base58AccountSeed))
 	}
 	return accounts;
 }
@@ -79,12 +86,12 @@ export function generateAccountSeed(seed, nonce, returnBase58) {
 		seed = Base58.decode(seed);
 	}
 
-	let nonceBytes = wordToBytes(nonce);
+	let nonceBytes = int32ToBytes(nonce);
 
-	let resultSeed = []
-		.concat(nonceBytes)
-		.concat(Array.prototype.slice.call(seed))
-		.concat(nonceBytes);
+	let resultSeed = new Uint8Array();
+	resultSeed = appendBuffer(resultSeed, nonceBytes);
+	resultSeed = appendBuffer(resultSeed, seed);
+	resultSeed = appendBuffer(resultSeed, nonceBytes);
 
 	if (returnBase58) {
 		return Base58.encode(new Uint8Array(doubleSha256(resultSeed)));
@@ -106,25 +113,11 @@ export function getAccountAddressFromPublicKey(publicKey) {
 
 	let publicKeyHashSHA256 = sha256.digest(publicKey);
 	let publicKeyHash = ripemd160.digest([].slice.call(publicKeyHashSHA256));
-	let addressArray = [];
-	addressArray.push(ADDRESS_VERSION);
-	addressArray = addressArray.concat([].slice.call(publicKeyHash));
+	let addressArray = new Uint8Array();
+	addressArray = appendBuffer(addressArray, [ADDRESS_VERSION]);
+	addressArray = appendBuffer(addressArray, publicKeyHash);
+
 	let checkSum = doubleSha256(addressArray);
-	addressArray.push(checkSum[0]);
-	addressArray.push(checkSum[1]);
-	addressArray.push(checkSum[2]);
-	addressArray.push(checkSum[3]);
-	return Base58.encode(new Uint8Array(addressArray));
-}
-
-
-export function generateSignaturePaymentTransaction(keyPair, lastReference, recipient, amount, fee, timestamp) {
-	const data = getTransitionStr(keyPair, lastReference, recipient, amount, fee, timestamp);
-	return nacl.crypto_sign_detached(new Uint8Array(data), keyPair.privateKey);
-}
-
-
-export function generatePaymentTransaction(keyPair, lastReference, recipient, amount, fee, timestamp, signature) {
-	return getTransitionStr(keyPair, lastReference, recipient, amount, fee, timestamp)
-		.concat(Array.prototype.slice.call(signature));
+	addressArray = appendBuffer(addressArray, checkSum.subarray(0, 4));
+	return Base58.encode(addressArray);
 }

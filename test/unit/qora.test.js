@@ -6,13 +6,13 @@ const qora = qoraCore.core;
 
 
 describe('Qora Core', function () {
-	it('genSeedByPassword()', function () {
-		expect(qora.genSeedByPassword('12345678')).to.eql('2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk');
+	it('generateSeedByPassword()', function () {
+		expect(qora.generateSeedByPassword('12345678')).to.eql('2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk');
 	});
 
 
-	it('genAccountFromSeed()', function () {
-		expect(qora.genAccountFromSeed('F9ABTQMy7cwoorBqRTN6J3pLWzCDrgp3BcmQ6LdpDNAB')).to.eql({
+	it('generateAccountFromSeed()', function () {
+		expect(qora.generateAccountFromSeed('F9ABTQMy7cwoorBqRTN6J3pLWzCDrgp3BcmQ6LdpDNAB')).to.eql({
 			address: 'QSDA3jmcAoVHTfXzXCFmxauPrkaNZbdwJ2',
 			publicKey: 'DU62bbT5EmBwxNagC5mD8X6S32J43oTWkXqSPTJUfCfZ',
 			privateKey: '5CdztuRkfA4S6RTBVNhB3F3iqdi6WU1owbmpgTzhgLMAAX6Xe4CCFbe13qV7RXxiYfSbgAFzAkvxi1WF5hFisjcK'
@@ -20,8 +20,8 @@ describe('Qora Core', function () {
 	});
 
 
-	it('genAccounts()', function () {
-		expect(qora.genAccounts('2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk', 2)).to.eql([
+	it('generateAccounts()', function () {
+		expect(qora.generateAccounts('2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk', 2)).to.eql([
 			{
 				address: 'QSDA3jmcAoVHTfXzXCFmxauPrkaNZbdwJ2',
 				publicKey: 'DU62bbT5EmBwxNagC5mD8X6S32J43oTWkXqSPTJUfCfZ',
