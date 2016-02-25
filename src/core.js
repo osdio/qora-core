@@ -1,5 +1,5 @@
 import Base58 from 'bs58';
-import nacl_factory from 'js-nacl';
+import nacl from 'tweetnacl';
 import RIPEMD160 from './libs/ripemd160';
 import sha256 from './libs/sha256';
 import {
@@ -12,8 +12,6 @@ import {
 	generatePaymentTransactionBase
 } from './utils';
 import TYPES from './constaints/transactionTypes';
-
-const nacl = nacl_factory.instantiate();
 
 
 export function generateSeedByPassword(password) {
@@ -61,20 +59,21 @@ export function generateAccounts(base58BaseSeed, count = 2) {
 
 export function getKeyPairFromSeed(seed, returnBase58) {
 	if (typeof(seed) == "string") {
-		seed = new Uint8Array(Base58.decode(seed));
+		seed = Base58.decode(seed);
 	}
 
-	let keyPair = nacl.crypto_sign_keypair_from_seed(seed);
+	let keyPair = nacl.sign.keyPair.fromSeed(new Uint8Array(seed));
+
 
 	if (returnBase58) {
 		return {
-			privateKey: Base58.encode(keyPair.signSk),
-			publicKey: Base58.encode(keyPair.signPk)
+			privateKey: Base58.encode(keyPair.secretKey),
+			publicKey: Base58.encode(keyPair.publicKey)
 		};
 	} else {
 		return {
-			privateKey: keyPair.signSk,
-			publicKey: keyPair.signPk
+			privateKey: keyPair.secretKey,
+			publicKey: keyPair.publicKey
 		};
 	}
 }

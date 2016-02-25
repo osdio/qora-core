@@ -1,5 +1,5 @@
 import Base58 from 'bs58';
-import nacl_factory from 'js-nacl';
+import nacl from 'tweetnacl';
 import {
 	doubleSha256,
 	wordToBytes,
@@ -13,9 +13,6 @@ import {
 import * as core from './core';
 
 
-const nacl = nacl_factory.instantiate();
-
-
 /*
  *
  * Simple Payment
@@ -24,7 +21,7 @@ const nacl = nacl_factory.instantiate();
 export function generateSignaturePaymentTransaction(keyPair, lastReference, recipient, amount, fee, timestamp) {
 	const data = generatePaymentTransactionBase(keyPair.publicKey, lastReference, recipient, amount, fee, timestamp);
 
-	return nacl.crypto_sign_detached(data, keyPair.privateKey);
+	return nacl.sign.detached(data, keyPair.privateKey);
 }
 
 
@@ -55,7 +52,7 @@ export function generatePaymentTransactionRaw({seed, lastReference, recipient, a
 export function generateSignatureArbitraryTransactionV3(keyPair, lastReference, service, data, fee, timestamp) {
 	const base = generateArbitraryTransactionV3Base(keyPair.publicKey, lastReference, service, data, fee, timestamp);
 
-	return nacl.crypto_sign_detached(base, keyPair.privateKey);
+	return nacl.sign.detached(base, keyPair.privateKey);
 }
 
 
@@ -85,7 +82,7 @@ export function generateArbitraryTransactionV3Raw({seed, lastReference, service,
  * */
 export function generateSignatureRegisterNameTransaction(keyPair, lastReference, owner, name, value, fee, timestamp) {
 	const data = generateRegisterNameTransactionBase(keyPair.publicKey, lastReference, owner, name, value, fee, timestamp);
-	return nacl.crypto_sign_detached(data, keyPair.privateKey);
+	return nacl.sign.detached(data, keyPair.privateKey);
 }
 
 
