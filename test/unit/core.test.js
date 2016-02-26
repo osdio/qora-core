@@ -3,8 +3,17 @@ import Base58 from 'bs58';
 import * as core from '../../src/core';
 
 
-
 describe('core', function () {
+	it('encrypt', function () {
+		expect(core.encrypt('12345678', '12345678')).to.eql('MbpDrSiL2rjaVqwPcGu3UDvXBhKcj9w9S');
+	});
+
+
+	it('decrypt', function () {
+		expect(core.decrypt('MbpDrSiL2rjaVqwPcGu3UDvXBhKcj9w9S', '12345678')).to.eql('12345678');
+	});
+
+
 	it('generateSeedByPassword()', function () {
 		expect(core.generateSeedByPassword('12345678')).to.eql('2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk');
 	});

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "bs58": "^3.0.0",
-    "tweetnacl": "^0.14.1"
+    "tweetnacl": "^0.14.1",
+    "tweetnacl-util": "^0.13.3"
   }
 }
