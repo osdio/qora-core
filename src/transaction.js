@@ -2,7 +2,6 @@ import Base58 from 'bs58';
 import nacl from 'tweetnacl';
 import {
 	doubleSha256,
-	wordToBytes,
 	appendBuffer,
 	int32ToBytes,
 	generateArbitraryTransactionV3Base,

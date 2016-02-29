@@ -74,15 +74,6 @@ export function doubleSha256(str) {
 }
 
 
-export function wordToBytes(word) {
-	let bytes = [];
-	for (let b = 0; b < 32; b += 8) {
-		bytes.push((word >>> (24 - b % 32)) & 0xFF);
-	}
-	return bytes;
-}
-
-
 export function int64ToBytes(int64) {
 	var byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
 

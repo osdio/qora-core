@@ -10,8 +10,8 @@ describe('utils.js', function () {
 	});
 
 
-	it('wordToBytes()', function () {
-		expect(utils.wordToBytes(1)).to.eql([0, 0, 0, 1]);
+	it('int32ToBytes()', function () {
+		expect(utils.int32ToBytes(1)).to.eql([0, 0, 0, 1]);
 	});
 
 

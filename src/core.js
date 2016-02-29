@@ -5,7 +5,6 @@ import RIPEMD160 from './libs/ripemd160';
 import sha256 from './libs/sha256';
 import {
 	doubleSha256,
-	wordToBytes,
 	appendBuffer,
 	int32ToBytes,
 	generateArbitraryTransactionV3Base,
