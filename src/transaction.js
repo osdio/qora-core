@@ -32,6 +32,8 @@ export function generatePaymentTransaction(keyPair, lastReference, recipient, am
 
 export function generatePaymentTransactionRaw({seed, lastReference, recipient, amount, fee, timestamp = new Date().getTime()}) {
 	let senderAccountSeed = Base58.decode(seed);
+	lastReference = Base58.decode(lastReference);
+	recipient = Base58.decode(recipient);
 	if (senderAccountSeed.length != 32) {
 		throw 'Wrong Seed'
 	}
@@ -63,6 +65,7 @@ export function generateArbitraryTransactionV3(keyPair, lastReference, service, 
 
 export function generateArbitraryTransactionV3Raw({seed, lastReference, service, data, fee, timestamp = new Date().getTime()}) {
 	let senderAccountSeed = Base58.decode(seed);
+	lastReference = Base58.decode(lastReference);
 	if (senderAccountSeed.length != 32) {
 		throw 'Wrong Seed'
 	}
@@ -93,6 +96,8 @@ export function generateRegisterNameTransaction(keyPair, lastReference, owner, n
 
 export function generateRegisterNameTransactionRaw({seed, lastReference, owner, name, value, fee, timestamp = new Date().getTime()}) {
 	let senderAccountSeed = Base58.decode(seed);
+	lastReference = Base58.decode(lastReference);
+	owner = Base58.decode(owner);
 	if (senderAccountSeed.length != 32) {
 		throw 'Wrong Seed'
 	}

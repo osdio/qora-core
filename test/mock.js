@@ -22,8 +22,8 @@ export default {
 	],
 	payment: {
 		seed: '2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk',
-		lastReference: Base58.decode('4FSWH4m3NLkEL474vrdH5DNdWakkPEN7gqUN6UXqhhXdtcLYXt1U2iE8g58Xc6c9KN4VyU7Z5zxt7cHCmrgbyGwp'),
-		recipient: Base58.decode('QSDA3jmcAoVHTfXzXCFmxauPrkaNZbdwJ2'),
+		lastReference: '4FSWH4m3NLkEL474vrdH5DNdWakkPEN7gqUN6UXqhhXdtcLYXt1U2iE8g58Xc6c9KN4VyU7Z5zxt7cHCmrgbyGwp',
+		recipient: 'QSDA3jmcAoVHTfXzXCFmxauPrkaNZbdwJ2',
 		amount: 1,
 		fee: 1,
 		timestamp: 1456317285172,
@@ -31,7 +31,7 @@ export default {
 	},
 	arbitraryTransactionV3: {
 		seed: '2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk',
-		lastReference: Base58.decode('4FSWH4m3NLkEL474vrdH5DNdWakkPEN7gqUN6UXqhhXdtcLYXt1U2iE8g58Xc6c9KN4VyU7Z5zxt7cHCmrgbyGwp'),
+		lastReference: '4FSWH4m3NLkEL474vrdH5DNdWakkPEN7gqUN6UXqhhXdtcLYXt1U2iE8g58Xc6c9KN4VyU7Z5zxt7cHCmrgbyGwp',
 		amount: 1,
 		fee: 1,
 		timestamp: 1456317285172,
@@ -41,13 +41,13 @@ export default {
 	},
 	name: {
 		seed: '2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk',
-		lastReference: Base58.decode('4FSWH4m3NLkEL474vrdH5DNdWakkPEN7gqUN6UXqhhXdtcLYXt1U2iE8g58Xc6c9KN4VyU7Z5zxt7cHCmrgbyGwp'),
+		lastReference: '4FSWH4m3NLkEL474vrdH5DNdWakkPEN7gqUN6UXqhhXdtcLYXt1U2iE8g58Xc6c9KN4VyU7Z5zxt7cHCmrgbyGwp',
 		amount: 1,
 		fee: 1,
 		timestamp: 1456317285172,
 		data: '12345678',
 		service: 0,
-		owner: Base58.decode('QcJUxjoFGjhceB6Ysgj8SirwtkhZYseyat'),
+		owner: 'QcJUxjoFGjhceB6Ysgj8SirwtkhZYseyat',
 		name: '1234567890000000',
 		value: '12345678',
 		tx: '1117iNHqghKp7t9P7DZyvo4dSXSipyfob8NfEmjtvLqdkXupzkQAnMQ7DycjZjW82wQPtxdrinLhW5A6qshG6vW5DWfGpQ7MVmdhUn9YujAPjdcKWZ267vcc3sSbpqTjbUBsxqsLgc74wspECSXupV65EyMnNyTj5rpWaQ1q9pnGuWN2cXsuSVFb6VBs2q4M94Furk28DUdupHkHmfYpgqPe2LTgPJtPixX7w5AMTNrzikchbL2PdyJjYUvdKi4At3AGDnURHxctG6vrdjKaUSyjnYX6nHCoRwCd41tTbQbQXdq8EHPbK4wKxWZdfYvii8'
