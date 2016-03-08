@@ -1,5 +1,3 @@
-import Base58 from 'bs58';
-
 export default {
 	word: '12345678',
 	seed: '2fVmtpyoK6FHYRxmWvnA61sAUZPHmNoau38uFtBQxwTk',

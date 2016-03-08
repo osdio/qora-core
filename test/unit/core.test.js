@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import Base58 from 'bs58';
 import * as core from '../../src/core';
 
 
