@@ -1,6 +1,6 @@
 import Base58 from 'bs58';
 import nacl from 'tweetnacl';
-import naclUtil from 'tweetnacl-util';
+import base64 from 'base64-js';
 import RIPEMD160 from './libs/ripemd160';
 import sha256 from './libs/sha256';
 import {
@@ -15,20 +15,16 @@ import {
 	utf8ArrayToStr
 } from './utils';
 import TYPES from './constaints/transactionTypes';
-nacl.util = naclUtil;
-
-const enc = nacl.util.encodeBase64;
-const dec = nacl.util.decodeBase64;
 
 
 export function encrypt(msg, password) {
-	return Base58.encode(nacl.secretbox(stringtoUTF8Array(msg), dec('crkCCNKADjatFscwlBoDjXw62dhwMNMp'), new Uint8Array(doubleSha256(password))));
+	return Base58.encode(nacl.secretbox(stringtoUTF8Array(msg), base64.toByteArray('crkCCNKADjatFscwlBoDjXw62dhwMNMp'), new Uint8Array(doubleSha256(password))));
 }
 
 
 export function decrypt(hash, password) {
 	hash = Base58.decode(hash);
-	return utf8ArrayToStr(nacl.secretbox.open(new Uint8Array(hash), dec('crkCCNKADjatFscwlBoDjXw62dhwMNMp'), new Uint8Array(doubleSha256(password))));
+	return utf8ArrayToStr(nacl.secretbox.open(new Uint8Array(hash), base64.toByteArray('crkCCNKADjatFscwlBoDjXw62dhwMNMp'), new Uint8Array(doubleSha256(password))));
 }
 
 
