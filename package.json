@@ -26,6 +26,6 @@
   "dependencies": {
     "base64-js": "^1.1.1",
     "bs58": "^3.0.0",
-    "tweetnacl": "^0.14.1"
+    "tweetnacl-rn": "^0.14.1"
   }
 }
