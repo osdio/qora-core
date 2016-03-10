@@ -1,5 +1,5 @@
 import Base58 from 'bs58';
-import nacl from 'tweetnacl';
+import nacl from 'tweetnacl-rn';
 import sha256 from './libs/sha256';
 import TYPES from './constaints/transactionTypes';
 
@@ -94,9 +94,8 @@ export function generatePaymentTransactionBase(publicKey, lastReference, recipie
 	const amountBytes = int64ToBytes(amount * 100000000);
 	const feeBytes = int64ToBytes(fee * 100000000);
 
-	let data = new Uint8Array();
+	let data = new Uint8Array(typeBytes);
 
-	data = appendBuffer(data, typeBytes);
 	data = appendBuffer(data, timestampBytes);
 	data = appendBuffer(data, lastReference);
 	data = appendBuffer(data, publicKey);
@@ -117,10 +116,9 @@ export function generateArbitraryTransactionV3Base(publicKey, lastReference, ser
 	const dataSizeBytes = int32ToBytes(arbitraryData.length);
 	const paymentsLengthBytes = int32ToBytes(0);  // Support payments - not yet.
 
-	var data = new Uint8Array();
+	var data = new Uint8Array(typeBytes);
 
 
-	data = appendBuffer(data, typeBytes);
 	data = appendBuffer(data, timestampBytes);
 	data = appendBuffer(data, lastReference);
 	data = appendBuffer(data, publicKey);
@@ -144,9 +142,8 @@ export function generateRegisterNameTransactionBase(publicKey, lastReference, ow
 	const nameSizeBytes = int32ToBytes(name.length);
 	const valueSizeBytes = int32ToBytes(value.length);
 
-	var data = new Uint8Array();
+	var data = new Uint8Array(typeBytes);
 
-	data = appendBuffer(data, typeBytes);
 	data = appendBuffer(data, timestampBytes);
 	data = appendBuffer(data, lastReference);
 	data = appendBuffer(data, publicKey);

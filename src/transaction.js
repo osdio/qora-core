@@ -1,5 +1,5 @@
 import Base58 from 'bs58';
-import nacl from 'tweetnacl';
+import nacl from 'tweetnacl-rn';
 import {
 	doubleSha256,
 	appendBuffer,

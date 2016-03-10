@@ -1,5 +1,5 @@
 import Base58 from 'bs58';
-import nacl from 'tweetnacl';
+import nacl from 'tweetnacl-rn';
 import base64 from 'base64-js';
 import RIPEMD160 from './libs/ripemd160';
 import sha256 from './libs/sha256';
@@ -100,8 +100,7 @@ export function generateAccountSeed(seed, nonce, returnBase58) {
 
 	let nonceBytes = int32ToBytes(nonce);
 
-	let resultSeed = new Uint8Array();
-	resultSeed = appendBuffer(resultSeed, nonceBytes);
+	let resultSeed = new Uint8Array(nonceBytes);
 	resultSeed = appendBuffer(resultSeed, seed);
 	resultSeed = appendBuffer(resultSeed, nonceBytes);
 
@@ -125,8 +124,7 @@ export function getAccountAddressFromPublicKey(publicKey) {
 
 	let publicKeyHashSHA256 = sha256.digest(publicKey);
 	let publicKeyHash = ripemd160.digest([].slice.call(publicKeyHashSHA256));
-	let addressArray = new Uint8Array();
-	addressArray = appendBuffer(addressArray, [ADDRESS_VERSION]);
+	let addressArray = new Uint8Array([ADDRESS_VERSION]);
 	addressArray = appendBuffer(addressArray, publicKeyHash);
 
 	let checkSum = doubleSha256(addressArray);
