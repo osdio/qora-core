@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import {expect} from 'chai';
 import * as core from '../../src/core';
 
 
@@ -10,6 +10,19 @@ describe('core', function () {
 
 	it('decrypt', function () {
 		expect(core.decrypt('MbpDrSiL2rjaVqwPcGu3UDvXBhKcj9w9S', '12345678')).to.eql('12345678');
+	});
+
+
+	it('getAccountAddressType()', function () {
+		expect(core.getAccountAddressType('QSDA3jmcAoVHTfXzXCFmxauPrkaNZbdwJ2')).to.eql('standard');
+		expect(core.getAccountAddressType('AGvtqUUWEpBM8CeDFcPP7a9s42nE4RKwK7')).to.eql('at');
+		expect(core.getAccountAddressType('adsfasdfasdfasdf')).to.eql('invalid');
+	});
+
+
+	it('isValidAddress()', function () {
+		expect(core.isValidAddress('QSDA3jmcAoVHTfXzXCFmxauPrkaNZbdwJ2')).to.eql(true);
+		expect(core.isValidAddress('adsfasdfadf')).to.eql(false);
 	});
 
 

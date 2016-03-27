@@ -1,9 +1,7 @@
 import Base58 from 'bs58';
 import nacl from 'tweetnacl-rn';
 import {
-	doubleSha256,
 	appendBuffer,
-	int32ToBytes,
 	generateArbitraryTransactionV3Base,
 	generateRegisterNameTransactionBase,
 	generatePaymentTransactionBase,

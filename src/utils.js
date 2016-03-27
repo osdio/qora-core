@@ -1,5 +1,3 @@
-import Base58 from 'bs58';
-import nacl from 'tweetnacl-rn';
 import sha256 from './libs/sha256';
 import TYPES from './constaints/transactionTypes';
 
@@ -10,19 +8,26 @@ export function utf8ArrayToStr(array) {
 	out = "";
 	len = array.length;
 	i = 0;
-	while(i < len) {
+	while (i < len) {
 		c = array[i++];
-		switch(c >> 4)
-		{
-			case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
-			// 0xxxxxxx
-			out += String.fromCharCode(c);
-			break;
-			case 12: case 13:
-			// 110x xxxx   10xx xxxx
-			char2 = array[i++];
-			out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
-			break;
+		switch (c >> 4) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+			case 7:
+				// 0xxxxxxx
+				out += String.fromCharCode(c);
+				break;
+			case 12:
+			case 13:
+				// 110x xxxx   10xx xxxx
+				char2 = array[i++];
+				out += String.fromCharCode(((c & 0x1F) << 6) | (char2 & 0x3F));
+				break;
 			case 14:
 				// 1110 xxxx  10xx xxxx  10xx xxxx
 				char2 = array[i++];
@@ -84,6 +89,17 @@ export function int64ToBytes(int64) {
 	}
 
 	return byteArray;
+}
+
+
+export function equal(buf1, buf2) {
+	if (buf1.byteLength != buf2.byteLength) return false;
+	var dv1 = new Uint8Array(buf1);
+	var dv2 = new Uint8Array(buf2);
+	for (var i = 0; i != buf1.byteLength; i++) {
+		if (dv1[i] != dv2[i]) return false;
+	}
+	return true;
 }
 
 

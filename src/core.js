@@ -7,14 +7,10 @@ import {
 	doubleSha256,
 	appendBuffer,
 	int32ToBytes,
-	generateArbitraryTransactionV3Base,
-	generateRegisterNameTransactionBase,
-	generatePaymentTransactionBase,
-	int64ToBytes,
 	stringtoUTF8Array,
-	utf8ArrayToStr
+	utf8ArrayToStr,
+	equal
 } from './utils';
-import TYPES from './constaints/transactionTypes';
 
 
 export function encrypt(msg, password) {
@@ -25,6 +21,43 @@ export function encrypt(msg, password) {
 export function decrypt(hash, password) {
 	hash = Base58.decode(hash);
 	return utf8ArrayToStr(nacl.secretbox.open(new Uint8Array(hash), base64.toByteArray('crkCCNKADjatFscwlBoDjXw62dhwMNMp'), new Uint8Array(doubleSha256(password))));
+}
+
+
+export function getAccountAddressType(address) {
+	try {
+		const ADDRESS_VERSION = 58;  // Q
+		const AT_ADDRESS_VERSION = 23; // A
+
+		if (typeof(address) == "string") {
+			address = new Uint8Array(Base58.decode(address));
+		}
+
+		var checkSum = address.subarray(address.length - 4, address.length)
+		var addressWithoutChecksum = address.subarray(0, address.length - 4);
+
+		var checkSumTwo = doubleSha256(addressWithoutChecksum);
+		checkSumTwo = checkSumTwo.subarray(0, 4);
+
+		if (equal(checkSum, checkSumTwo)) {
+			if (address[0] == ADDRESS_VERSION) {
+				return "standard";
+			}
+			if (address[0] == AT_ADDRESS_VERSION) {
+				return "at";
+			}
+		}
+
+		return "invalid";
+
+	} catch (e) {
+		return "invalid";
+	}
+}
+
+
+export function isValidAddress(address) {
+	return (getAccountAddressType(address) != "invalid");
 }
 
 
