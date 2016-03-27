@@ -1,7 +1,7 @@
 {
   "name": "qora-core",
   "description": "A javascript implement for qora",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "main": "lib/index.js",
   "author": "soliury",
   "repository": "soliury/qora-core",
